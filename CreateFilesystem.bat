@@ -1,0 +1,1 @@
+mklittlefs.exe --create .\Data --block 8192 --page 256 --size 524288 pcremote.fs.bin

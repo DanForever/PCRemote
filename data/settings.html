@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dan's fantastic and amazing remote power switch</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" type="text/css" href="/style/style.css">
+		<script src="/js/wifi"></script>
+		<script src="/js/power"></script>
+		<script src="/js/settings"></script>
+	</head>
+	<body>
+		<h1>Dan's fantastic and amazing remote power switch</h1>
+		<p><img id="wifi-strength" src="/images/wifi-3.png" alt="wifi" title="wifi" /></p>
+		<p>
+			<button class="button power-button-unknown" id="power-button" onclick="pressPowerSwitch()">Checking power...</button>
+		</p>
+		<div id="content">
+			<p>
+				<a href="/schedule" class="button config-button">Schedule</a>
+				<a href="/network" class="button config-button">Network</a>
+				<a href="/actions" class="button config-button">Actions</a>
+				<a href="/settings" class="button config-button">Settings</a>
+			</p>
+			<p>
+				<h2>Firmware Update</h2>
+				<p>Current firmware version: <span id="firmware-version">[fetching]</span></p>
+				<p>Current filesystem version: <span id="filesystem-version">[fetching]</span></p>
+				<iframe name="hidden-iframe" style="display: none;"></iframe>
+				<form id="upload-update" action="/update" method="post" enctype="multipart/form-data" target="hidden-iframe">
+					<input type='file' name='update' />
+					<input type='button' value='Update' onclick="uploadUpdate()" />
+				</form>
+			</p>
+			<p>
+				<h2>Factory Reset</h2>
+				<p>Delete all your settings and return to factory defaults</p>
+				<button class="button" id="factory-reset-button" onclick="doFactoryReset()">Factory Reset</button>
+				
+			</p>
+		</div>
+		<div id="loading-display" hidden>
+			<p><img src="/images/loading.gif" alt="loading spinner" /></p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,1 @@
+arduino-cli.exe compile -v -b esp8266:esp8266:nodemcuv2 -u -t -p COM8 --export-binaries --build-property "build.extra_flags=\"-DATOMIC_FS_UPDATE\"" %cd%

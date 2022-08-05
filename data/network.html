@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dan's fantastic and amazing remote power switch</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" type="text/css" href="/style/style.css" />
+		<script src="/js/wifi"></script>
+		<script src="/js/power"></script>
+		<script src="/js/network"></script>
+	</head>
+	<body>
+		<h1>Dan's fantastic and amazing remote power switch</h1>
+		<p><img id="wifi-strength" src="/images/wifi-3.png" alt="wifi" title="wifi" /></p>
+		<p>
+			<button class="button power-button-unknown" id="power-button" onclick="pressPowerSwitch()">Checking power...</button>
+		</p>
+		<p>
+			<a href="/schedule" class="button config-button">Schedule</a>
+			<a href="/network" class="button config-button">Network</a>
+			<a href="/actions" class="button config-button">Actions</a>
+			<a href="/settings" class="button config-button">Settings</a>
+		</p>
+		<p>
+			<h2>Wifi - Client</h2>
+			<form action="/network/wifi" method="post">
+				<label for="wifi-enabled">Enabled:</label>
+				<input type="checkbox" id="wifi-enabled" name="enabled" /><br />
+				<label for="ssid">SSID:</label>
+				<input type="text" id="ssid" name="ssid" /><br />
+				<label for="ssid">Password:</label>
+				<input type="password" id="password" name="password" /><br />
+				<input type="submit" value="Save" />
+			</form>
+		</p>
+		<p>
+			<h2>Wifi - Hostname</h2>
+			<form action="/network/hostname" method="post">
+				<label for="hostname">Hostname:</label>
+				<input type="text" id="hostname" name="hostname" /><br />
+				<input type="submit" value="Save" />
+			</form>
+		</p>
+		<p>
+			<h2>Wifi - Access point</h2>
+			<form action="/network/ap" method="post">
+				<label for="ap-enabled">Enabled:</label>
+				<input type="checkbox" id="ap-enabled" name="enabled" /><br />
+				<label for="ap-ssid">SSID:</label>
+				<input type="text" id="ap-ssid" name="ssid" /><br />
+				<label for="ap-password">Password:</label>
+				<input type="password" id="ap-password" name="ap-password" /><br />
+				<input type="submit" value="Save" />
+			</form>
+		</p>
+	</body>
+</html>
