@@ -1,6 +1,6 @@
 # Remote control ATX power switch
 
-##Prerequisites
+## Prerequisites
 ### [ESPTool](https://github.com/espressif/esptool "Esptool")
 This is for flashing the firmware and the filesystem to the microcontroller
 ### [Arduino-CLI](https://github.com/arduino/arduino-cli)
