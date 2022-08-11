@@ -49,9 +49,9 @@ namespace ConfigurationImpl
 		virtual void Serialize(JsonDocument& document) override;
 		virtual void Deserialize(JsonDocument& document) override;
 
-	private:
 		String GenerateDefaultSSID() const;
 
+	private:
 		String m_ssid;
 		String m_password;
 		bool m_enabled;

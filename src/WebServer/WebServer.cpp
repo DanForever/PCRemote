@@ -37,34 +37,39 @@
 WebServer::WebServer()
 	: m_server(80)
 {
-	m_server.on("/", HTTP_GET, [this] { HandlerHome(); });
+	m_server.OnSecure("/", HTTP_GET, [this] { HandlerHome(); });
 
-	m_server.on("/network", HTTP_GET, [this] { HandlerNetwork(); });
-	m_server.on("/network/rssi", HTTP_GET, [this] { HandlerRSSI(); });
-	m_server.on("/network/wifi", HTTP_POST, [this] { HandlerSetWifi(); });
-	m_server.on("/network/wifi", HTTP_GET, [this] { HandlerGetWifi(); });
-	m_server.on("/network/hostname", HTTP_POST, [this] { HandlerSetHostname(); });
-	m_server.on("/network/hostname", HTTP_GET, [this] { HandlerGetHostname(); });
-	m_server.on("/network/ap", HTTP_POST, [this] { HandlerSetAccessPoint(); });
-	m_server.on("/network/ap", HTTP_GET, [this] { HandlerGetAccessPoint(); });
+	m_server.OnSecure("/network", HTTP_GET, [this] { HandlerNetwork(); });
+	m_server.OnSecure("/network/rssi", HTTP_GET, [this] { HandlerRSSI(); });
+	m_server.OnSecure("/network/wifi", HTTP_POST, [this] { HandlerSetWifi(); });
+	m_server.OnSecure("/network/wifi", HTTP_GET, [this] { HandlerGetWifi(); });
+	m_server.OnSecure("/network/hostname", HTTP_POST, [this] { HandlerSetHostname(); });
+	m_server.OnSecure("/network/hostname", HTTP_GET, [this] { HandlerGetHostname(); });
+	m_server.OnSecure("/network/ap", HTTP_POST, [this] { HandlerSetAccessPoint(); });
+	m_server.OnSecure("/network/ap", HTTP_GET, [this] { HandlerGetAccessPoint(); });
 
-	m_server.on("/settings", HTTP_GET, [this] { HandlerSettings(); });
-	m_server.on("/settings/reset", HTTP_POST, [this] { HandlerFactoryReset(); });
+	m_server.OnSecure("/settings", HTTP_GET, [this] { HandlerSettings(); });
+	m_server.OnSecure("/settings/credentials", HTTP_POST, [this] { HandlerCredentials(); });
+	m_server.OnSecure("/settings/reset", HTTP_POST, [this] { HandlerFactoryReset(); });
 
 	m_server.on(UriBraces("/style/{}"), HTTP_GET, [this] { HandlerStyle(); });
 	m_server.on(UriBraces("/images/{}"), HTTP_GET, [this] { HandlerImages(); });
-	m_server.on(UriBraces("/js/{}"), HTTP_GET, [this] { HandlerScripts(); });
-	m_server.on("/computer/press", HTTP_GET, [this] { HandlerPowerPressed(); });
-	m_server.on("/computer/status", HTTP_GET, [this] { HandlerPowerStatus(); });
-	m_server.on("/update", HTTP_POST, [this] { HandlerUpdateComplete(); }, [this] { HandlerUpdateInProgress(); });
+	m_server.OnSecure(UriBraces("/js/{}"), HTTP_GET, [this] { HandlerScripts(); });
+	m_server.OnSecure("/computer/press", HTTP_GET, [this] { HandlerPowerPressed(); });
+	m_server.OnSecure("/computer/status", HTTP_GET, [this] { HandlerPowerStatus(); });
+	m_server.OnSecure("/update", HTTP_POST, [this] { HandlerUpdateComplete(); }, [this] { HandlerUpdateInProgress(); });
 
-	m_server.on("/version/firmware", HTTP_GET, [this] { HandlerVersionFirmware(); });
-	m_server.on("/version/filesystem", HTTP_GET, [this] { HandlerVersionFilesystem(); });
+	m_server.OnSecure("/version/firmware", HTTP_GET, [this] { HandlerVersionFirmware(); });
+	m_server.OnSecure("/version/filesystem", HTTP_GET, [this] { HandlerVersionFilesystem(); });
 }
 
 void WebServer::Start()
 {
 	m_server.begin();
+
+	m_server.Realm(g_Config.Network().AccessPoint().GenerateDefaultSSID());
+	m_server.Username(g_Config.Credentials().Username());
+	m_server.Password(g_Config.Credentials().Password());
 }
 
 void WebServer::Update()
@@ -138,6 +143,38 @@ void WebServer::HandlerSettings()
 	File file = Filesystem::Open("/settings.html");
 	m_server.streamFile(file, "text/html");
 	file.close();
+}
+
+void WebServer::HandlerCredentials()
+{
+	const bool enabled = m_server.hasArg("enabled");
+	const String& username = m_server.arg("username");
+	const String& password = m_server.arg("password");
+
+	if (enabled)
+	{
+		g_Config.Credentials().Username(username);
+		g_Config.Credentials().Password(password);
+	}
+	else
+	{
+		g_Config.Credentials().Username("");
+		g_Config.Credentials().Password("");
+	}
+
+	g_Config.Save();
+
+	Serial.println("Credentials saved");
+
+	m_server.Username(g_Config.Credentials().Username());
+	m_server.Password(g_Config.Credentials().Password());
+
+	StaticJsonDocument<128> document;
+	document["success"] = true;
+	char buffer[128];
+	serializeJson(document, buffer);
+
+	m_server.send(200, "application/json", buffer);
 }
 
 void WebServer::HandlerFactoryReset()

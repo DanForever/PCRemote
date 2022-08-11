@@ -19,16 +19,37 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "network.h"
+#ifndef __CONFIGURATION_CREDENTIALS_H__
+#define __CONFIGURATION_CREDENTIALS_H__
 
-void ConfigurationImpl::Network::Serialize(JsonDocument& document)
+#include <ArduinoJson.h>
+
+#include "wifi.h"
+#include "ap.h"
+#include "subconfiguration.h"
+
+namespace ConfigurationImpl
 {
-	m_wifi.Serialize(document);
-	m_accessPoint.Serialize(document);
+	class Credentials : public ISubConfiguration
+	{
+	public:
+		Credentials() = default;
+		~Credentials() override = default;
+
+		const String& Username() const { return m_username; }
+		const String& Password() const { return m_password; }
+
+		void Username(const String& username) { m_username = username; }
+		void Password(const String& password) { m_password = password; }
+
+		// Inherited via ISubConfiguration
+		virtual void Serialize(JsonDocument& document) override;
+		virtual void Deserialize(JsonDocument& document) override;
+
+	private:
+		String m_username;
+		String m_password;
+	};
 }
 
-void ConfigurationImpl::Network::Deserialize(JsonDocument& document)
-{
-	m_wifi.Deserialize(document);
-	m_accessPoint.Deserialize(document);
-}
+#endif // __CONFIGURATION_NETWORK_H__

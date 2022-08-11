@@ -22,7 +22,7 @@
 #ifndef __WEBSERVER_H__
 #define __WEBSERVER_H__
 
-#include <ESP8266WebServer.h>
+#include "SecureWebServer.h"
 
 class WebServer
 {
@@ -39,6 +39,7 @@ private:
 	void HandlerScripts();
 	void HandlerNetwork();
 	void HandlerSettings();
+	void HandlerCredentials();
 	void HandlerFactoryReset();
 	void HandlerRSSI();
 	void HandlerSetWifi();
@@ -58,7 +59,7 @@ private:
 	void UpdateOTA(HTTPUpload& incomingFile);
 	void FinishOTA(HTTPUpload& incomingFile);
 
-	ESP8266WebServer m_server;
+	SecureWebServer m_server;
 	bool m_triggerRestart = false;
 };
 

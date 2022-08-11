@@ -25,6 +25,7 @@
 #include <ArduinoJson.h>
 
 #include "Network.h"
+#include "credentials.h"
 
 #define CONFIG_DOC_BUFFERSIZE (1024 * 4)
 
@@ -38,8 +39,12 @@ public:
 	ConfigurationImpl::Network& Network() { return m_network; }
 	const ConfigurationImpl::Network& Network() const { return m_network; }
 
+	ConfigurationImpl::Credentials& Credentials() { return m_credentials; }
+	const ConfigurationImpl::Credentials& Credentials() const { return m_credentials; }
+
 private:
 	ConfigurationImpl::Network m_network;
+	ConfigurationImpl::Credentials m_credentials;
 };
 
 extern Configuration g_Config;

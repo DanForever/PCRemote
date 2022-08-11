@@ -15,30 +15,41 @@
 		<p>
 			<button class="button power-button-unknown" id="power-button" onclick="pressPowerSwitch()">Checking power...</button>
 		</p>
-		<div id="content">
-			<p>
-				<a href="/schedule" class="button config-button">Schedule</a>
-				<a href="/network" class="button config-button">Network</a>
-				<a href="/actions" class="button config-button">Actions</a>
-				<a href="/settings" class="button config-button">Settings</a>
-			</p>
-			<p>
-				<h2>Firmware Update</h2>
-				<p>Current firmware version: <span id="firmware-version">[fetching]</span></p>
-				<p>Current filesystem version: <span id="filesystem-version">[fetching]</span></p>
-				<iframe name="hidden-iframe" style="display: none;"></iframe>
-				<form id="upload-update" action="/update" method="post" enctype="multipart/form-data" target="hidden-iframe">
-					<input type='file' name='update' />
-					<input type='button' value='Update' onclick="uploadUpdate()" />
-				</form>
-			</p>
-			<p>
-				<h2>Factory Reset</h2>
-				<p>Delete all your settings and return to factory defaults</p>
-				<button class="button" id="factory-reset-button" onclick="doFactoryReset()">Factory Reset</button>
-				
-			</p>
-		</div>
+        <div id="content">
+            <iframe name="hidden-iframe" style="display: none;"></iframe>
+            <p>
+                <a href="/schedule" class="button config-button">Schedule</a>
+                <a href="/network" class="button config-button">Network</a>
+                <a href="/actions" class="button config-button">Actions</a>
+                <a href="/settings" class="button config-button">Settings</a>
+            </p>
+            <div>
+                <h2>Credentials</h2>
+                <form action="/settings/credentials" method="post" target="hidden-iframe">
+                    <label for="credentials-enabled">Restrict access to this pcremote behind a username and password:</label>
+                    <input type="checkbox" id="credentials-enabled" name="enabled" /><br />
+                    <label for="username">Username:</label>
+                    <input type="text" id="credentials-username" name="username" /><br />
+                    <label for="password">Password:</label>
+                    <input type="password" id="credentials-password" name="password" /><br />
+                    <input type="submit" value="Save" />
+                </form>
+            </div>
+            <div>
+                <h2>Firmware Update</h2>
+                <p>Current firmware version: <span id="firmware-version">[fetching]</span></p>
+                <p>Current filesystem version: <span id="filesystem-version">[fetching]</span></p>
+                <form id="upload-update" action="/update" method="post" enctype="multipart/form-data" target="hidden-iframe">
+                    <input type='file' name='update' />
+                    <input type='button' value='Update' onclick="uploadUpdate()" />
+                </form>
+            </div>
+            <div>
+                <h2>Factory Reset</h2>
+                <p>Delete all your settings and return to factory defaults</p>
+                <button class="button" id="factory-reset-button" onclick="doFactoryReset()">Factory Reset</button>
+            </div>
+        </div>
 		<div id="loading-display" hidden>
 			<p><img src="/images/loading.gif" alt="loading spinner" /></p>
 		</div>

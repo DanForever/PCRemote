@@ -51,6 +51,7 @@ void Configuration::Initialize()
 
 	// Import the values from the json document
 	m_network.Deserialize(document);
+	m_credentials.Deserialize(document);
 
 	configFile.close();
 }
@@ -58,7 +59,10 @@ void Configuration::Initialize()
 void Configuration::Save()
 {
 	DynamicJsonDocument document(1024);
+	
 	m_network.Serialize(document);
+	m_credentials.Serialize(document);
+
 	File configFile = Filesystem::Open(CONFIG_PATH, "w");
 
 	// Write it using a buffered stream

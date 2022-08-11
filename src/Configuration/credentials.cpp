@@ -19,16 +19,27 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "network.h"
+#include "credentials.h"
 
-void ConfigurationImpl::Network::Serialize(JsonDocument& document)
+#include "utilities.h"
+
+namespace Key
 {
-	m_wifi.Serialize(document);
-	m_accessPoint.Serialize(document);
+	constexpr auto CREDENTIALS = "credentials";
+	constexpr auto USERNAME = "username";
+	constexpr auto PASSWORD = "password";
 }
 
-void ConfigurationImpl::Network::Deserialize(JsonDocument& document)
+void ConfigurationImpl::Credentials::Serialize(JsonDocument& document)
 {
-	m_wifi.Deserialize(document);
-	m_accessPoint.Deserialize(document);
+	Serial.println("Saving credentials config...");
+
+	Utility::Write(document, m_username, Key::CREDENTIALS, Key::USERNAME);
+	Utility::Write(document, m_password, Key::CREDENTIALS, Key::PASSWORD);
+}
+
+void ConfigurationImpl::Credentials::Deserialize(JsonDocument& document)
+{
+	Utility::Read(document, m_username, Key::CREDENTIALS, Key::USERNAME);
+	Utility::Read(document, m_password, Key::CREDENTIALS, Key::PASSWORD);
 }
