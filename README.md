@@ -12,7 +12,7 @@ This device on the other hand, can tell you at a glance if your PC is on or off.
 
 ## Prototype
 This is the first prototype, made entirely using THT parts
-![mk1](https://github.com/DanForever/PCRemote/docs/images/mk1.jpg)
+![mk1](/docs/images/mk1.jpg)
 
 ## Prerequisites
 ### [ESPTool](https://github.com/espressif/esptool "Esptool")
