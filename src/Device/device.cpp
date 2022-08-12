@@ -112,7 +112,7 @@ void Device::SetupHostname()
 
 	if (hostname && strlen(hostname) > 0)
 	{
-		DEBUG_PRINTLN("Restoring hostname '{0}' loaded from config file");
+		DEBUG_PRINTLN("Restoring hostname '{0}' loaded from config file", hostname);
 
 		WiFi.hostname(hostname);
 	}
