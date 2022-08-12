@@ -25,6 +25,7 @@
 #include <ESP8266WiFi.h>
 
 #include "../Configuration/configuration.h"
+#include "../Debug/DebugPrint.h"
 
 Device g_device;
 
@@ -56,7 +57,7 @@ void Device::SetMode()
 
 void Device::SetupWifi()
 {
-	Serial.println("Setting up wifi...");
+	DEBUG_PRINTLN("Setting up wifi...");
 
 	if (WiFi.isConnected())
 		WiFi.disconnect();
@@ -65,7 +66,7 @@ void Device::SetupWifi()
 
 	if (!g_Config.Network().Wifi().Enabled())
 	{
-		Serial.println("Wifi is disabled");
+		DEBUG_PRINTLN("Wifi is disabled");
 		return;
 	}
 
@@ -74,32 +75,29 @@ void Device::SetupWifi()
 
 	if (ssid && strlen(ssid) > 0)
 	{
-		Serial.print("Connecting to SSID '");
-		Serial.print(ssid);
-		Serial.println("' loaded from config file");
+		DEBUG_PRINTLN("Connecting to SSID '{0}' loaded from config file", ssid);
 		WiFi.begin(ssid, password);
 
 		switch (WiFi.waitForConnectResult())
 		{
 		case WL_CONNECTED:
-			Serial.println("Connected to wifi!");
+			DEBUG_PRINTLN("Connected to wifi!");
 			break;
 
 		case WL_NO_SSID_AVAIL:
-			Serial.print("Cannot find ");
-			Serial.println(ssid);
+			DEBUG_PRINTLN("Cannot find SSID: '{0}'", ssid);
 			break;
 
 		case WL_CONNECT_FAILED:
-			Serial.println("Connection to wifi failed");
+			DEBUG_PRINTLN("Connection to wifi failed");
 			break;
 
 		case WL_WRONG_PASSWORD:
-			Serial.println("Wifi password is incorrect");
+			DEBUG_PRINTLN("Wifi password is incorrect");
 			break;
 
 		case WL_DISCONNECTED:
-			Serial.println("Cannot connect to wifi, incorrect station mode set");
+			DEBUG_PRINTLN("Cannot connect to wifi, incorrect station mode set");
 			break;
 		}
 	}
@@ -112,23 +110,21 @@ void Device::SetupHostname()
 
 	const char* hostname = g_Config.Network().Wifi().Hostname();
 
-	if (hostname)
+	if (hostname && strlen(hostname) > 0)
 	{
-		Serial.print("Restoring hostname '");
-		Serial.print(hostname);
-		Serial.println("' loaded from config file");
+		DEBUG_PRINTLN("Restoring hostname '{0}' loaded from config file");
 
 		WiFi.hostname(hostname);
 	}
 	else
 	{
-		Serial.println("No hostname found");
+		DEBUG_PRINTLN("No hostname found");
 	}
 }
 
 void Device::SetupAccessPoint()
 {
-	Serial.println("Setting up Access point...");
+	DEBUG_PRINTLN("Setting up Access point...");
 
 	SetMode();
 
@@ -136,7 +132,7 @@ void Device::SetupAccessPoint()
 
 	if (!g_Config.Network().AccessPoint().Enabled())
 	{
-		Serial.println("Access point is disabled");
+		DEBUG_PRINTLN("Access point is disabled");
 		return;
 	}
 
@@ -147,8 +143,8 @@ void Device::SetupAccessPoint()
 
 	if (!success)
 	{
-		Serial.println("Failed to setup access point with:");
-		Serial.println(ssid);
-		Serial.println(password);
+		DEBUG_PRINTLN("Failed to setup access point with:");
+		DEBUG_PRINTLN("SSID: {0}", ssid);
+		DEBUG_PRINTLN("PASSWORD: {0}", password);
 	}
 }

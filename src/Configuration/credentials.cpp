@@ -22,6 +22,7 @@
 #include "credentials.h"
 
 #include "utilities.h"
+#include "../Debug/DebugPrint.h"
 
 namespace Key
 {
@@ -32,7 +33,7 @@ namespace Key
 
 void ConfigurationImpl::Credentials::Serialize(JsonDocument& document)
 {
-	Serial.println("Saving credentials config...");
+	DEBUG_PRINTLN("Saving credentials config...");
 
 	Utility::Write(document, m_username, Key::CREDENTIALS, Key::USERNAME);
 	Utility::Write(document, m_password, Key::CREDENTIALS, Key::PASSWORD);

@@ -24,6 +24,7 @@
 #include <Crypto.h>
 
 #include "../Filesystem/filesystem.h"
+#include "../Debug/DebugPrint.h"
 
 //#define USE_SHA256
 
@@ -83,7 +84,7 @@ private:
 	{
 		if (!m_server->hasHeader("Authorization"))
 		{
-			Serial.println("No Authorization header in request, denying access");
+			DEBUG_PRINTLN("No Authorization header in request, denying access");
 			return false;
 		}
 

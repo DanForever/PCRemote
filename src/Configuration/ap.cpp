@@ -24,6 +24,7 @@
 #include <ESP8266WiFi.h>
 
 #include "utilities.h"
+#include "../Debug/DebugPrint.h"
 
 namespace Key
 {
@@ -76,7 +77,7 @@ const char* ConfigurationImpl::AccessPoint::Password() const
 
 void ConfigurationImpl::AccessPoint::Serialize(JsonDocument& document)
 {
-	Serial.println("Saving access point config...");
+	DEBUG_PRINTLN("Saving access point config...");
 
 	Utility::Write(document, m_ssid, Key::NETWORK, Key::AP, Key::SSID);
 	Utility::Write(document, m_password, Key::NETWORK, Key::AP, Key::PASSWORD);

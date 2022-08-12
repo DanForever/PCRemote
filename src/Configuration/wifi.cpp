@@ -22,6 +22,7 @@
 #include "wifi.h"
 
 #include "utilities.h"
+#include "../Debug/DebugPrint.h"
 
 namespace Key
 {
@@ -90,7 +91,7 @@ const char* ConfigurationImpl::Wifi::Hostname() const
 
 void ConfigurationImpl::Wifi::Serialize(JsonDocument& document)
 {
-	Serial.println("Saving Wifi config...");
+	DEBUG_PRINTLN("Saving Wifi config...");
 
 	Utility::Write(document, m_ssid, Key::NETWORK, Key::WIFI, Key::SSID);
 	Utility::Write(document, m_password, Key::NETWORK, Key::WIFI, Key::PASSWORD);
@@ -100,19 +101,15 @@ void ConfigurationImpl::Wifi::Serialize(JsonDocument& document)
 
 void ConfigurationImpl::Wifi::Deserialize(JsonDocument& document)
 {
-	Serial.println("Loading Wifi config...");
+	DEBUG_PRINTLN("Loading Wifi config...");
 
 	Utility::Read(document, m_ssid, Key::NETWORK, Key::WIFI, Key::SSID);
 	Utility::Read(document, m_password, Key::NETWORK, Key::WIFI, Key::PASSWORD);
 	Utility::ReadDefault(document, m_enabled, false, Key::NETWORK, Key::WIFI, Key::ENABLED);
 	Utility::Read(document, m_hostname, Key::NETWORK, Key::WIFI, Key::HOSTNAME);
 
-	Serial.print("  - SSID: ");
-	Serial.println(m_ssid);
-	Serial.print("  - PASSWORD: ");
-	Serial.println(m_password);
-	Serial.print("  - Enabled: ");
-	Serial.println(m_enabled);
-	Serial.print("  - Hostname: ");
-	Serial.println(m_hostname);
+	DEBUG_PRINTLN("  - SSID: {0}", m_ssid);
+	DEBUG_PRINTLN("  - Password: {0}", m_password);
+	DEBUG_PRINTLN("  - Enabled: {0}", m_enabled);
+	DEBUG_PRINTLN("  - Hostname: {0}", m_hostname);
 }

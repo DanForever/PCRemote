@@ -20,7 +20,10 @@
 */
 
 #include "computer.h"
+
 #include <Arduino.h>
+
+#include "../Debug/DebugPrint.h"
 
 #define MICROCONTROLLER_LED_PIN 16
 
@@ -39,7 +42,7 @@ void Computer::Initialize()
 
 void Computer::PressPowerButton(unsigned long duration)
 {
-	Serial.println("Power button pressed");
+	DEBUG_PRINTLN("Power button pressed");
 
 	m_pressRequested = true;
 	m_targetPressDuration = duration;
@@ -62,7 +65,7 @@ void Computer::UpdatePowerButton()
 
 		if (currentPressDuration > m_targetPressDuration)
 		{
-			Serial.println("Power button released");
+			DEBUG_PRINTLN("Power button released");
 			digitalWrite(POWER_SWITCH_PIN, LOW);
 			m_pressRequested = false;
 		}

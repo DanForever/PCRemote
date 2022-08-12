@@ -31,6 +31,7 @@
 #include "../Computer/Computer.h"
 #include "../Device/device.h"
 #include "../Version/version.h"
+#include "../Debug/DebugPrint.h"
 
 #include "../Configuration/utilities.h"
 
@@ -97,6 +98,8 @@ void WebServer::HandlerStyle()
 	if (!Filesystem::Exists(path.c_str()))
 		return;
 
+	DEBUG_PRINTLN("Serving css:    '{0}'", path);
+
 	File file = Filesystem::Open(path.c_str());
 	m_server.streamFile(file, "text/css");
 	file.close();
@@ -109,6 +112,8 @@ void WebServer::HandlerImages()
 	if (!Filesystem::Exists(path.c_str()))
 		return;
 
+	DEBUG_PRINTLN("Serving image:  '{0}'", path);
+
 	File file = Filesystem::Open(path.c_str());
 	m_server.streamFile(file, "image/png");
 	file.close();
@@ -116,15 +121,12 @@ void WebServer::HandlerImages()
 
 void WebServer::HandlerScripts()
 {
-	Serial.println("Serving script...");
-
 	String path = "/js/" + m_server.pathArg(0) + ".js";
 
 	if (!Filesystem::Exists(path.c_str()))
 		return;
 
-	Serial.print(" - ");
-	Serial.println(path);
+	DEBUG_PRINTLN("Serving script: '{0}'", path);
 
 	File file = Filesystem::Open(path.c_str());
 	m_server.streamFile(file, "text/javascript");
@@ -164,7 +166,7 @@ void WebServer::HandlerCredentials()
 
 	g_Config.Save();
 
-	Serial.println("Credentials saved");
+	DEBUG_PRINTLN("Credentials saved");
 
 	m_server.Username(g_Config.Credentials().Username());
 	m_server.Password(g_Config.Credentials().Password());
@@ -213,14 +215,9 @@ void WebServer::HandlerSetWifi()
 	const String& password = m_server.arg("password");
 
 	// Print them to the serial for debugging
-	Serial.print("Wifi Enabled: ");
-	Serial.println(enabled);
-
-	Serial.print("SSID: ");
-	Serial.println(ssid);
-
-	Serial.print("Password: ");
-	Serial.println(password);
+	DEBUG_PRINTLN("Wifi Enabled: {0}", enabled);
+	DEBUG_PRINTLN("SSID: {0}", ssid);
+	DEBUG_PRINTLN("Password: {0}", password);
 
 	// Save them to the config
 	g_Config.Network().Wifi().Enabled(enabled);
@@ -257,7 +254,6 @@ void WebServer::HandlerSetHostname()
 	g_device.SetupHostname();
 
 	// Send output to the user
-	Serial.println("HandlerNetwork();");
 	HandlerNetwork();
 }
 
@@ -279,14 +275,9 @@ void WebServer::HandlerSetAccessPoint()
 	const String password = m_server.arg("password");
 
 	// Print them to the serial for debugging
-	Serial.print("AP Enabled: ");
-	Serial.println(enabled);
-
-	Serial.print("SSID: ");
-	Serial.println(ssid);
-
-	Serial.print("Password: ");
-	Serial.println(password);
+	DEBUG_PRINTLN("AP Enabled: {0}", enabled);
+	DEBUG_PRINTLN("SSID: {0}", ssid);
+	DEBUG_PRINTLN("Password: {0}", password);
 
 	// Save them to the config
 	g_Config.Network().AccessPoint().Enabled(enabled);
@@ -360,7 +351,7 @@ void WebServer::HandlerVersionFilesystem()
 
 void WebServer::HandlerUpdateComplete()
 {
-	Serial.println("Update finished (Final handler)");
+	DEBUG_PRINTLN("Update finished (Final handler)");
 	m_server.send(200, "text/plain", (::Update.hasError()) ? "FAIL" : "OK");
 	m_triggerRestart = true;
 }
@@ -393,16 +384,10 @@ void WebServer::StartOTA(HTTPUpload& incomingFile)
 	const uint32_t freeSketchSpace = ESP.getFreeSketchSpace();
 	const uint32_t maxSketchSpace = (freeSketchSpace - 0x1000) & 0xFFFFF000;
 
-	Serial.println("Starting OTA Update...");
-
-	Serial.print("Free sketch space: ");
-	Serial.println(freeSketchSpace);
-
-	Serial.print("Estimated max sketch space: ");
-	Serial.println(maxSketchSpace);
-
-	Serial.print("Incoming reported filesize: ");
-	Serial.println(incomingFile.totalSize);
+	DEBUG_PRINTLN("Starting OTA Update...");
+	DEBUG_PRINTLN("Free sketch space: {0}", freeSketchSpace);
+	DEBUG_PRINTLN("Estimated max sketch space: {0}", maxSketchSpace);
+	DEBUG_PRINTLN("Incoming reported filesize: {0}", incomingFile.totalSize);
 
 	File file = Filesystem::Open("/loading.html");
 	m_server.streamFile(file, "text/html");
@@ -417,11 +402,8 @@ void WebServer::StartOTA(HTTPUpload& incomingFile)
 
 void WebServer::UpdateOTA(HTTPUpload& incomingFile)
 {
-	Serial.print("Incoming total filesize: ");
-	Serial.println(incomingFile.totalSize);
-
-	Serial.print("Incoming current filesize: ");
-	Serial.println(incomingFile.currentSize);
+	DEBUG_PRINTLN("Incoming total filesize: {0}", incomingFile.totalSize);
+	DEBUG_PRINTLN("Incoming current filesize: {0}", incomingFile.currentSize);
 
 	if (::Update.write(incomingFile.buf, incomingFile.currentSize) != incomingFile.currentSize)
 	{
@@ -434,7 +416,7 @@ void WebServer::FinishOTA(HTTPUpload& incomingFile)
 	if (::Update.end(true))
 	{
 		// true to set the size to the current progress
-		Serial.printf("Update Success: %u\nRebooting...\n", incomingFile.totalSize);
+		DEBUG_PRINTLN("Update Success: {0}\nRebooting...", incomingFile.totalSize);
 	}
 	else
 	{

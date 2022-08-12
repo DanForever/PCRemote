@@ -24,6 +24,7 @@
 #include <StreamUtils.h>
 
 #include "../Filesystem/filesystem.h"
+#include "../Debug/DebugPrint.h"
 
 #define BUFFER_CHUNK_SIZE 64
 #define CONFIG_PATH "/config/config.json"
@@ -37,7 +38,7 @@ void Configuration::Initialize()
 	
 	if (!configFile)
 	{
-		Serial.println("No configuration file found, defaults will be used");
+		DEBUG_PRINTLN("No configuration file found, defaults will be used");
 	}
 
 	// Read it using a buffered stream
@@ -76,13 +77,13 @@ void Configuration::Save()
 
 bool Configuration::Delete()
 {
-	Serial.println("Deleting configuration file...");
+	DEBUG_PRINTLN("Deleting configuration file...");
 
 	bool success = Filesystem::Delete(CONFIG_PATH);
 
 	if (success)
 	{
-		Serial.println("Config file successfully deleted");
+		DEBUG_PRINTLN("Config file successfully deleted");
 	}
 
 	return success;
