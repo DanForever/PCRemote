@@ -1,0 +1,7 @@
+
+*.exe
+*.bin
+/build
+/kicad/pcremote/pcremote-backups
+*.kicad_prl
+kicad/pcremote/fp-info-cache
