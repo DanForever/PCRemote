@@ -23,7 +23,7 @@
 
 #include <arduino.h>
 #include <ESP8266WiFi.h>
-
+#include <DF-Print.h>
 #include <uri/UriBraces.h>
 
 #include "../Filesystem/filesystem.h"
@@ -31,7 +31,6 @@
 #include "../Computer/Computer.h"
 #include "../Device/device.h"
 #include "../Version/version.h"
-#include "../Debug/DebugPrint.h"
 
 #include "../Configuration/utilities.h"
 

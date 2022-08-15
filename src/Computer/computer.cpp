@@ -22,8 +22,7 @@
 #include "computer.h"
 
 #include <Arduino.h>
-
-#include "../Debug/DebugPrint.h"
+#include <DF-Print.h>
 
 #define MICROCONTROLLER_LED_PIN 16
 

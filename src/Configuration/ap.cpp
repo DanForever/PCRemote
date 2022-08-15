@@ -22,9 +22,9 @@
 #include "ap.h"
 
 #include <ESP8266WiFi.h>
+#include <DF-Print.h>
 
 #include "utilities.h"
-#include "../Debug/DebugPrint.h"
 
 namespace Key
 {

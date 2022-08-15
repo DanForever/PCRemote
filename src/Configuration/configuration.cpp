@@ -22,9 +22,9 @@
 #include "configuration.h"
 
 #include <StreamUtils.h>
+#include <DF-Print.h>
 
 #include "../Filesystem/filesystem.h"
-#include "../Debug/DebugPrint.h"
 
 #define BUFFER_CHUNK_SIZE 64
 #define CONFIG_PATH "/config/config.json"

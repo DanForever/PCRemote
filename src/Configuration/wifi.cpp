@@ -22,7 +22,7 @@
 #include "wifi.h"
 
 #include "utilities.h"
-#include "../Debug/DebugPrint.h"
+#include <DF-Print.h>
 
 namespace Key
 {
@@ -103,9 +103,9 @@ void ConfigurationImpl::Wifi::Deserialize(JsonDocument& document)
 {
 	DEBUG_PRINTLN("Loading Wifi config...");
 
-	Utility::Read(document, m_ssid, Key::NETWORK, Key::WIFI, Key::SSID);
-	Utility::Read(document, m_password, Key::NETWORK, Key::WIFI, Key::PASSWORD);
-	Utility::ReadDefault(document, m_enabled, false, Key::NETWORK, Key::WIFI, Key::ENABLED);
+	Utility::ReadDefault(document, m_ssid, String("DFWireless"), Key::NETWORK, Key::WIFI, Key::SSID);
+	Utility::ReadDefault(document, m_password, String("thefoxandwolf"), Key::NETWORK, Key::WIFI, Key::PASSWORD);
+	Utility::ReadDefault(document, m_enabled, true, Key::NETWORK, Key::WIFI, Key::ENABLED);
 	Utility::Read(document, m_hostname, Key::NETWORK, Key::WIFI, Key::HOSTNAME);
 
 	DEBUG_PRINTLN("  - SSID: {0}", m_ssid);

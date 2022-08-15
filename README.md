@@ -26,6 +26,7 @@ Also requires these libraries:
   * [LittleFS](https://github.com/esp8266/Arduino/tree/master/libraries/LittleFS)
 * [ArduinoJson](https://arduinojson.org/)
 * [StreamUtils](https://github.com/bblanchon/ArduinoStreamUtils)
+* [DF-Print](https://github.com/DanForever/DF-Print)
 
 ### [mklittlefs](https://github.com/earlephilhower/mklittlefs)
 This is for creating the filesystem binary

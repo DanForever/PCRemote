@@ -22,9 +22,9 @@
 #include "SecureWebServer.h"
 
 #include <Crypto.h>
+#include <DF-Print.h>
 
 #include "../Filesystem/filesystem.h"
-#include "../Debug/DebugPrint.h"
 
 //#define USE_SHA256
 

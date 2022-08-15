@@ -23,9 +23,9 @@
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <DF-Print.h>
 
 #include "../Configuration/configuration.h"
-#include "../Debug/DebugPrint.h"
 
 Device g_device;
 
